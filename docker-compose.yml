@@ -5,7 +5,8 @@ services:
     volumes:
       - db:/var/lib/postgresql/data
     environment:
-      - POSTGRES_PASSWORD=$POSTGRES_DEV_PASSWORD
+      - POSTGRES_PASSWORD='password'
+      # - POSTGRES_PASSWORD=$POSTGRES_DEV_PASSWORD
   web:
     build: .
     image: rails_template:latest
