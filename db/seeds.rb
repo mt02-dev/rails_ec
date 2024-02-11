@@ -7,12 +7,12 @@
 #   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
 #   Character.create(name: "Luke", movie: movies.first)
 
-product_count = Dir.children("#{Rails.root.to_s}/app/assets/images/rails_ec_images/").count
+product_count = Dir.children(Rails.root.join("app/assets/images/rails_ec_images/")).count
 product_count.times do |i| 
   Product.create!(
     name: "Test Product #{i + 1}",
     price: 600,
-    description: "This is descritpion of product #{i + 1}.",
+    description: "This is descritpion of product #{i + 1}."
   )
 end
 
