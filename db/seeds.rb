@@ -8,7 +8,7 @@
 #   Character.create(name: "Luke", movie: movies.first)
 
 product_count = Dir.children(Rails.root.join("app/assets/images/rails_ec_images/")).count
-product_count.times do |i| 
+product_count.times do |i|
   Product.create!(
     name: "Test Product #{i + 1}",
     price: 600,
@@ -18,7 +18,9 @@ end
 
 products = Product.all
 product_count.times do |i|
-   
-  products[i].product_image.attach(io: File.open(Rails.root.join("app/assets/images/rails_ec_images/image#{i + 1}.jpg")), filename: "image#{i + 1}.jpg")
+  products[i].product_image.attach(
+    io: File.open(Rails.root.join("app/assets/images/rails_ec_images/image#{i + 1}.jpg")),
+    filename: "image#{i + 1}.jpg"
+  )
   products[i].save!
 end
