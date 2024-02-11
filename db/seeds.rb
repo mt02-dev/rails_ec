@@ -13,7 +13,7 @@ product_count.times do |i|
     name: "Test Product #{i + 1}",
     price: 600,
     description: "This is descritpion of product #{i + 1}.",
-)
+  )
 end
 
 products = Product.all
