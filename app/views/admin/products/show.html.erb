@@ -1,0 +1,25 @@
+<%= render partial: 'admin/application/header' %>
+<div class="container">
+  <section class="py-5">
+    <div class="container px-4 px-lg-5 my-5">
+      <div class="row gx-4 gx-lg-5 align-items-center">
+        <div class="d-flex justify-content-end fs-5">
+          <%= link_to 'Back', admin_products_path, class: "btn btn-outline-dark" %>
+        </div>
+        <div class="col-md-5"><%= image_tag @product.product_image.variant(resize: "300x300^", gravity: "center", crop: "300x300+0+0"), class: "card-img-top mb-5 mb-md-0", alt: "お菓子の画像" %></div>
+        <div class="col-md-7">
+          <div class="small mb-1">SKU: BST-498</div>
+          <h1 class="display-5 fw-bolder"><%= @product.name %> </h1>
+          <div class="fs-5 mb-5">
+            <span><%= "#{@product.price}円" %></span>
+          </div>
+          <p class="lead"><%= @product.description %></p>
+          <div class="d-flex justify-content-end">
+            <%= link_to "Edit", edit_admin_product_path(@product), class: "btn btn-outline-dark me-3" %>
+            <%= link_to 'Delete', admin_product_path(@product), data: { "turbo-method": :delete, turbo_confirm: "You sure?"}, class: "btn btn-secondary flex-shrink-0" %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
