@@ -8,6 +8,10 @@ jobs:
   run-htmlbeautifier:
     name: Run htmlbeautifier
     runs-on: ubuntu-latest
+    env:
+      POSTGRES_PASSWORD=$POSTGRES_PASSWORD
+      NAME=$NAME
+      PASSWORD=$PASSWORD
     steps:
     - name: checkout pushed commit
       uses: actions/checkout@v2
