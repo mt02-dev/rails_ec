@@ -19,6 +19,7 @@ jobs:
         ref: ${{ github.event.pull_request.head.sha }}
     - name: run htmlbeautifier on docker-compose
       run: |
+        echo $POSTGRES_PASSWORD
         docker-compose build
         docker-compose run --rm web bin/setup
         docker-compose run --rm web bin/htmlbeautifier
