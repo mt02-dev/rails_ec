@@ -4,10 +4,10 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
-# env:
-#   POSTGRES_PASSWORD: $POSTGRES_PASSWORD
-#   NAME: vars.NAME }}
-#   PASSWORD: ${{ vars.PASSWORD }}
+env:
+  POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+  NAME: ${{ vars.NAME }}
+  PASSWORD: ${{ secrets.PASSWORD }}
 jobs:
   run-htmlbeautifier:
     name: Run htmlbeautifier
@@ -20,6 +20,8 @@ jobs:
     - name: run htmlbeautifier on docker-compose
       run: |
         echo "hello world! $POSTGRES_PASSWORD"
+        echo "name $NAME"
+        echo "password $PASSWORD"
         docker-compose build
         docker-compose run --rm web bin/setup
         docker-compose run --rm web bin/htmlbeautifier
