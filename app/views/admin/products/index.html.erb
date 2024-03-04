@@ -1,0 +1,35 @@
+<%= render partial: 'admin/application/header' %>
+<div class="container px-4 px-lg-5 mb-5">
+  <h1 class="my-5">Manage Products</h1>
+  <%= render partial: 'admin/products/flash' %>
+  <% @products.each do |product|%>
+    <div class="container mb-3">
+      <div class="row">
+        <div class="col-sm-3 col-lg-2">
+          <%= image_tag product.product_image.variant(resize: "100x100^", gravity: "center", crop: "100x100+0+0"), class: "img-thumbnail"%>
+        </div>
+        <div class="col-sm-7 col-lg-9">
+          <div class="row">
+            <div class="col-sm-3 col-lg-2">
+              <h5 class="product_name"><%= link_to product.name, admin_product_path(product), class: "text-secondary"%></h4>
+              <span><%= "#{product.price}円" %></span>
+            </div>
+            <div class="col-sm-9 col-lg-10 text-break">
+              <p class="discription">
+                <%= product.description %>
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-2 col-lg-1">
+          <div class="row">
+            <div class="d-sm-flex justify-content-end">
+              <%= link_to 'Delete', admin_product_path(product), data: { "turbo-method": :delete, turbo_confirm: "You sure?"}, class: "btn btn-secondary" %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <hr/>
+  <% end %>
+</div>
