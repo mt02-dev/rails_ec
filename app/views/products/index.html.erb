@@ -20,7 +20,9 @@
             </div>
             <!-- Product actions-->
             <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-              <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Add To Cart</a></div>
+              <div class="text-center">
+                <%= button_to "Add to Cart", carts_path, params: {product_id: product.id, quantity: 1, page_info: { page: 'index'}} , class: "btn btn-outline-dark mt-auto" %>
+              </div>
             </div>
           </div>
         </div>
