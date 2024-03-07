@@ -9,18 +9,20 @@
       </h4>
       <ul class="list-group mb-3">
         <%# -- oneitem -- %>
-        <% total_for_each.each do |one_record| %>
-          <li class="list-group-item d-flex justify-content-between align-items-center lh-sm">
-            <div>
-              <h6 class="my-0"><%= product_name(one_record[:product_id]) %></h6>
-            </div>
-            <span class="text-body-secondary"><%= "#{product_price(one_record[:product_id])}円"%></span>
-            <span class="text-body-secondary"><%= "数量: #{one_record[:quantity]}"%></span>
-            <%= link_to carts_delete_path, data: { "turbo-method": :delete }, class: 'btn btn-outline-dark border' do %>
-              <i class="bi bi-trash3"></i>
-            <% end %>
-            <% delete_target(one_record[:product_id]) %>
-          </li>
+        <% unless session[:cart].nil? %>
+          <% total_for_each.each do |one_record| %>
+            <li class="list-group-item d-flex justify-content-between align-items-center lh-sm">
+              <div>
+                <h6 class="my-0"><%= product_name(one_record[:product_id]) %></h6>
+              </div>
+              <span class="text-body-secondary"><%= "#{product_price(one_record[:product_id])}円"%></span>
+              <span class="text-body-secondary"><%= "数量: #{one_record[:quantity]}"%></span>
+              <%= link_to carts_delete_path, data: { "turbo-method": :delete }, class: 'btn btn-outline-dark border' do %>
+                <i class="bi bi-trash3"></i>
+              <% end %>
+              <% delete_target(one_record[:product_id]) %>
+            </li>
+          <% end %>
         <% end %>
         <%# -- end -- %>
         <li class="list-group-item d-flex justify-content-between bg-body-tertiary">
