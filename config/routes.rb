@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-
   delete 'carts/delete', to: 'carts#destroy'
 
   resources :tasks

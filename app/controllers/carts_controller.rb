@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CartsController < ApplicationController
   def index; end
 
@@ -14,7 +16,7 @@ class CartsController < ApplicationController
 
   def destroy
     remove_id = session[:delete_target]
-    session[:cart].reject! { |one_record| one_record["product_id"] == remove_id }
+    session[:cart].reject! { |one_record| one_record['product_id'] == remove_id }
     session[:delete_target] = nil
     redirect_to carts_url :see_other
   end

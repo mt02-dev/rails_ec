@@ -1,9 +1,10 @@
-module CartsHelper
+# frozen_string_literal: true
 
+module CartsHelper
   def total_quantity
     sum = 0
     session[:cart].each do |cart_product|
-      sum += cart_product["quantity"].to_i
+      sum += cart_product['quantity'].to_i
     end
     sum
   end
@@ -21,8 +22,15 @@ module CartsHelper
   end
 
   def total_for_each
-    id_and_quantity_hash = session[:cart].group_by { |one_record| one_record["product_id"] }.transform_values { |v| v.sum { |h| h["quantity"].to_i}}
-    id_and_quantity_hash.map { |k, v| { product_id: k, quantity: v } }
+    hash_array_group_by_id = session[:cart].group_by do |one_record|
+      one_record['product_id']
+    end
+    sum_quantity_group_by_id = hash_array_group_by_id.transform_values do |v|
+      v.sum do |h|
+        h['quantity'].to_i
+      end
+    end
+    sum_quantity_group_by_id.map { |k, v| { product_id: k, quantity: v } }
   end
 
   def delete_target(product_id)
@@ -39,4 +47,3 @@ module CartsHelper
     total
   end
 end
-
