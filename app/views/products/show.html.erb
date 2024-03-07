@@ -13,8 +13,8 @@
         <p class="lead"><%= @product.description %></p>
         <div class="d-flex">
           <%= form_with url: carts_path do |f| %>
-            <%= f.number_field :quantity, value: '1', class: "form-control text-center me-3", style: "max-width: 3rem"%>
-            <%= f.submit class: "btn btn-outline-dark mt-auto" do %>
+            <%= f.number_field :quantity, value: '1', min: '1', class: "form-control text-center me-3", style: "max-width: 3rem"%>
+            <%= button_to carts_path, params: {product_id: @product.id, page_info: { page: 'show', main_product:  @product}} , class: "btn btn-outline-dark mt-auto" do %>
               <i class="bi-cart-fill me-1"></i>
               Add to Cart
             <% end %>
