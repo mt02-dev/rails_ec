@@ -23,6 +23,7 @@ module CartsHelper
 
   def total_for_each
     return if session[:cart].nil?
+
     hash_array_group_by_id = session[:cart].group_by do |one_record|
       one_record['product_id']
     end
@@ -40,6 +41,7 @@ module CartsHelper
 
   def total_amount
     return 0 if session[:cart].nil?
+
     total = 0
     id_and_quantity_hash = total_for_each
     id_and_quantity_hash.each do |product|
