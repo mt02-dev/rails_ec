@@ -1,9 +1,7 @@
 # frozen_string_literal: true
 
 module CartsHelper
-  def cart_products(cart_id)
-    return 0 if cart_id.nil?
-
-    CartProduct.where(cart_id:).sum(:quantity)
+  def total_quantity
+    session[:cart_id].nil? ? 0 : Cart.find(session[:cart_id]).cart_products.sum(:quantity)
   end
 end
