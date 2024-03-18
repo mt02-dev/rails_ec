@@ -1,15 +1,6 @@
 <%= render partial: "application/navigation" %>
 <div class="container my-4">
-  <% if @order.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@order.errors.count, "error") %> prohibited this order from being saved:</h2>
-      <ul>
-        <% @order.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
+
   <% render partial: 'application/flash' %>
   <div class="row g-5">
     <div class="col-md-5 col-lg-4 order-md-last">
@@ -58,6 +49,18 @@
     <div class="col-md-7 col-lg-8">
       <h4 class="mb-3">Billing address</h4>
       <%= form_with model: @order, url: orders_path do |f| %>
+        <% if flash[:error_messages] %>
+          <div id='error_explanation'>
+            <div class="alert alert-danger ">
+              The form contain <%= pluralize(flash[:error_messages].count, "error") %>
+            </div>
+            <ul>
+              <% flash[:error_messages].each do |message| %>
+                <li class="text-danger"><%= message %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
         <div class="row g-3">
           <div class="col-sm-6">
             <%= f.label :first, "First Name" %>

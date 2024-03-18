@@ -41,7 +41,6 @@ class CartsController < ApplicationController
     @cart.cart_products.where(product_id: params[:product_id]).destroy_all
     redirect_to carts_path status: :see_other
   end
-  
 
   private
 
