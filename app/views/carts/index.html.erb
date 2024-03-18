@@ -1,5 +1,16 @@
 <%= render partial: "application/navigation" %>
 <div class="container my-4">
+  <% if @order.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@order.errors.count, "error") %> prohibited this order from being saved:</h2>
+      <ul>
+        <% @order.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <% render partial: 'application/flash' %>
   <div class="row g-5">
     <div class="col-md-5 col-lg-4 order-md-last">
       <h4 class="d-flex justify-content-between align-items-center mb-3">
@@ -46,7 +57,7 @@
     <%# -- billing address -- %>
     <div class="col-md-7 col-lg-8">
       <h4 class="mb-3">Billing address</h4>
-      <%= form_with url: orders_path do |f| %>
+      <%= form_with model: @order, url: orders_path do |f| %>
         <div class="row g-3">
           <div class="col-sm-6">
             <%= f.label :first, "First Name" %>
@@ -128,7 +139,18 @@
           </div>
         </div>
         <hr class="my-4">
-        <%= button_to "Purchase", orders_path, class: "w-100 btn btn-outline-dark btn-lg"%> 
+        <% if total_quantity.zero? %>
+          <%= link_to "Continue Shopping", products_path, class: "w-100 btn btn-outline-dark btn-lg"%> 
+        <% else %>
+          <div class="row">
+            <div class="col-md-6">
+              <%= link_to "Continue Shopping", products_path, class: "w-100 btn btn-outline-dark btn-lg"%> 
+            </div>
+            <div class="col-md-6">
+              <%= f.submit "Purchase", class: "w-100 btn btn-outline-dark btn-lg"%> 
+            </div>
+          </div>
+        <% end %>
       <% end %>
     </div>
   </div>

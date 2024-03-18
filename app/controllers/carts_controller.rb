@@ -5,9 +5,10 @@ class CartsController < ApplicationController
 
   ADD_CART_ERROR_MESSAGE = "Couldn't add in cart."
   def index
+    @order = Order.new(flash[:billing_address])
     @cart_products = @cart.cart_products.eager_load(:product)
-    @billing_amount = 0
     @total_quantity = @cart_products.sum(:quantity)
+    @billing_amount = 0
     @cart_products.each do |cart_product|
       @billing_amount += cart_product.product.price * cart_product.quantity
     end
@@ -40,6 +41,7 @@ class CartsController < ApplicationController
     @cart.cart_products.where(product_id: params[:product_id]).destroy_all
     redirect_to carts_path status: :see_other
   end
+  
 
   private
 
