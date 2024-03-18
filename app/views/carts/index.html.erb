@@ -1,6 +1,5 @@
 <%= render partial: "application/navigation" %>
 <div class="container my-4">
-
   <% render partial: 'application/flash' %>
   <div class="row g-5">
     <div class="col-md-5 col-lg-4 order-md-last">
@@ -102,7 +101,6 @@
             <%= f.text_field :zip, class: "form-control" %>
           </div>
         </div>
-
         <%# checkbox %>
         <hr class="my-4">
         <div class="form-check">
@@ -114,7 +112,6 @@
           Save this information for next time
         </div>
         <hr class="my-4">
-
         <h4 class="mb-3">Payment</h4>
         <div class="my-3">
           <div class="form-check">
@@ -143,14 +140,14 @@
         </div>
         <hr class="my-4">
         <% if total_quantity.zero? %>
-          <%= link_to "Continue Shopping", products_path, class: "w-100 btn btn-outline-dark btn-lg"%> 
+          <%= link_to "Continue Shopping", products_path, class: "w-100 btn btn-outline-dark btn-lg"%>
         <% else %>
           <div class="row">
             <div class="col-md-6">
-              <%= link_to "Continue Shopping", products_path, class: "w-100 btn btn-outline-dark btn-lg"%> 
+              <%= link_to "Continue Shopping", products_path, class: "w-100 btn btn-outline-dark btn-lg"%>
             </div>
             <div class="col-md-6">
-              <%= f.submit "Purchase", class: "w-100 btn btn-outline-dark btn-lg"%> 
+              <%= f.submit "Purchase", class: "w-100 btn btn-outline-dark btn-lg"%>
             </div>
           </div>
         <% end %>

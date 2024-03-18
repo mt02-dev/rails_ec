@@ -2,7 +2,6 @@
 
 class OrdersController < ApplicationController
   PURCAHSE_SUCCESS_MESSAGE = 'Thank you for your purchase!'
-  PURCAHSE_ERROR_MESSAGE = 'Please try again later or contact customer support for assistance.'
 
   def show; end
 
@@ -14,18 +13,21 @@ class OrdersController < ApplicationController
     return if cart.nil?
 
     cart_products = cart.cart_products.eager_load(:product)
-
-    permitted_params = set_params
-    permitted_params[:billing_amount] = 0
-    cart_products.each do |cart_product|
-      permitted_params[:billing_amount] += cart_product.product.price.to_i * cart_product.quantity.to_i
-    end
-    create_order(permitted_params, cart_products)
+    create_order(cart_products)
   end
 
   private
 
-  def set_params
+  def order_params(cart_products)
+    permitted_params = billing_address_params
+    permitted_params[:billing_amount] = 0
+    cart_products.each do |cart_product|
+      permitted_params[:billing_amount] += cart_product.product.price.to_i * cart_product.quantity.to_i
+    end
+    permitted_params
+  end
+
+  def billing_address_params
     params.require(:order).permit(
       :first,
       :last,
@@ -53,27 +55,33 @@ class OrdersController < ApplicationController
     redirect_to products_url
   end
 
-  def create_order(params, cart_products)
+  def order_detail_params(cart_products, order_id)
+    order_details = []
+    cart_products.each do |cart_product|
+      order_details << {
+        order_id:,
+        product_id: cart_product.product_id,
+        product_name: cart_product.product.name,
+        price: cart_product.product.price,
+        quantity: cart_product.quantity
+      }
+    end
+    order_details
+  end
+
+  def create_order_detail(order_details)
+    order_details.each do |order_detail|
+      OrderDetail.create(order_detail).nil?
+    end
+  end
+
+  def create_order(cart_products)
     ApplicationRecord.transaction do
-      order = Order.new(params)
+      order = Order.new(order_params(cart_products))
       if order.save
         order_id = Order.find(order.id).id
-        order_details = []
-        cart_products.each do |cart_product|
-          order_details << {
-            order_id:,
-            product_id: cart_product.product_id,
-            product_name: cart_product.product.name,
-            price: cart_product.product.price,
-            quantity: cart_product.quantity
-          }
-        end
-        if OrderDetail.insert_all(order_details)
-          delete_cart
-        else
-          flash.now[:danger] = PURCAHSE_ERROR_MESSAGE
-          render 'carts/index', status: :unprocessable_entity
-        end
+        create_order_detail(order_detail_params(cart_products, order_id))
+        delete_cart
       else
         redirect_to carts_path, status: :unprocessable_entity, flash: {
           billing_address: order,
