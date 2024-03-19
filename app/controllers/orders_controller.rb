@@ -2,7 +2,7 @@
 
 class OrdersController < ApplicationController
   PURCAHSE_SUCCESS_MESSAGE = 'Thank you for your purchase!'
-
+  PURCAHSE_ERROR_MESSAGE = "We're sorry, but the purchase was unsuccessful."
   def show; end
 
   # 購入ボタン押下時
@@ -70,17 +70,14 @@ class OrdersController < ApplicationController
   end
 
   def create_order_detail(order_details)
-    order_details.each do |order_detail|
-      OrderDetail.create(order_detail).nil?
-    end
+    OrderDetail.insert_all!(order_details)
   end
 
   def create_order(cart_products)
     ApplicationRecord.transaction do
       order = Order.new(order_params(cart_products))
       if order.save
-        order_id = Order.find(order.id).id
-        create_order_detail(order_detail_params(cart_products, order_id))
+        create_order_detail(order_detail_params(cart_products, order.id))
         delete_cart
       else
         redirect_to carts_path, status: :unprocessable_entity, flash: {
@@ -89,6 +86,11 @@ class OrdersController < ApplicationController
         }
       end
     end
+  rescue StandardError => e
+    logger.error "An error occurred while creating the record.: #{e.message}"
+    redirect_to carts_path, status: :unprocessable_entity, flash: {
+      error_messages: [PURCAHSE_ERROR_MESSAGE]
+    }
   end
 
   # プロモーションコード適用
