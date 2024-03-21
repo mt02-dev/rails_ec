@@ -1,86 +1,19 @@
+<h1>Purchase Reciept</h1>
+<p>Order No.<%= @order.id %></p>
+<p>Date: <%= @order.created_at.strftime("%Y/%m/%d") %></p>
+<p>Buyer Name: <%= "#{@order.first} #{@order.last}" %></p>
+<p class="small text-muted mb-1">Shipping Address</p>
+<p>Country: <%= @order.country %></p>
+<p>State: <%= @order.state %></p>
+<p>Zip: <%= @order.zip %></p>
+<p>Address: <%= "#{@order.address1} #{@order.address2}" %></p>
 
- <div class="container py-5 h-100">
-    <div class="row d-flex justify-content-center align-items-center h-100">
-      <div class="col-lg-8 col-xl-6">
-        <div class="card border-top border-bottom border-3" >
-          <div class="card-body p-5">
-
-            <p class="lead fw-bold mb-5 text-dark">Purchase Reciept</p>
-
-            <div class="row">
-              <div class="col mb-3">
-                <p class="small text-muted mb-1">Order No.</p>
-                <p><%= @order.id %></p>
-              </div>
-              <div class="col mb-3">
-                <p class="small text-muted mb-1">Date</p>
-                <p><%= @order.created_at.strftime("%Y/%m/%d") %></p>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col mb-3">
-                <p class="small text-muted mb-1">Buyer Name</p>
-                <p><%= "#{@order.first} #{@order.last}" %></p>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col mb-3">
-                <p class="small text-muted mb-1">Shipping Address</p>
-                <div class="mx-n5 px-3 py-2">
-                  <div class="row">
-                    <div class="col mb-3">
-                      <p class="small text-muted mb-1">Country</p>
-                      <p><%= @order.country %></p>
-                    </div>
-                    <div class="col mb-3">
-                      <p class="small text-muted mb-1">State</p>
-                      <p><%= @order.state %></p>
-                    </div>
-                    <div class="col mb-3">
-                      <p class="small text-muted mb-1">Zip</p>
-                      <p><%= @order.zip %></p>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <p class="small text-muted mb-1">Address</p>
-                    <p><%= "#{@order.address1} #{@order.address2}" %></p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="mx-n5 px-5 py-4 border" style="background-color: #f2f2f2;">
-              <div class="row">
-                <% @order.order_details.each do |order_product| %>
-                  <div class="col-md-4 col-lg-6">
-                    <p><%= order_product.product_name %></p>
-                  </div>
-                  <div class="col-md-4 col-lg-3">
-                    <p class="text-end"><%= "¥#{order_product.price}" %></p>
-                  </div>
-                  <div class="col-md-4 col-lg-3">
-                    <p class="text-end"><%= "Quantity: #{order_product.quantity}" %></p>
-                  </div>
-                <% end %>
-              </div>
-            </div>
-            <div class="mx-n5 px-5 py-4">
-              <div class="row" >
-                <div class="col-md-8 col-lg-9">
-                  <span class="text-success">Promotin code<span>
-                </div>
-                <div class="col-md-4 col-lg-3">
-                  <span><%= "- ¥#{0}" %></span>
-                </div>
-              </div>
-            </div>
-            <div class="row my-4 ">
-              <div class="col-md-4 offset-md-8 col-lg-3 offset-lg-9">
-                <p class="lead fw-bold mb-0 border-bottom text-center"><%= "¥#{@order.billing_amount}" %></p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+<h3>Purchase Products</h3>
+<% @order.order_details.each do |order_product| %>
+  <p><%=" #{order_product.product_name} ¥#{order_product.price} Quantity: #{order_product.quantity}"%></p>
+<% end %>
+<div class="row" >
+  <span class="text-success">Promotin code<span>
+  <span><%= "- ¥#{0}" %></span>
+</div>
+<p><%= "¥#{@order.billing_amount}" %></p>
