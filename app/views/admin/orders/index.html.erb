@@ -1,0 +1,21 @@
+<div class="container px-4 px-lg-5 mb-5">
+  <h1 class="my-5">Order Detail List</h1>
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col">Order ID</th>
+        <th scope="col">Buyer Name</th>
+        <th scope="col">Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @orders.each do |order|%>
+          <tr>
+            <td><%= link_to order.id, admin_order_path(order), class: "text-secondary" %></span></td>
+            <td><%= "#{order.first} #{order.last}" %></td>
+            <td><%= date_format(order.created_at) %></td>
+          </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

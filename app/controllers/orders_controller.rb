@@ -3,7 +3,6 @@
 class OrdersController < ApplicationController
   PURCAHSE_SUCCESS_MESSAGE = 'Thank you for your purchase!'
   PURCAHSE_ERROR_MESSAGE = "We're sorry, but the purchase was unsuccessful."
-  def show; end
 
   # 購入ボタン押下時
   # cart_idをもとにCart,Cart_product テーブル削除

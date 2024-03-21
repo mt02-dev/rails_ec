@@ -9,6 +9,7 @@
     <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
   </head>
   <body>
+    <%= render partial: 'application/navigation' %>
     <%= yield %>
     <%= render partial: 'application/footer' %>
   </body>
