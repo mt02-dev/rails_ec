@@ -77,7 +77,9 @@ class OrdersController < ApplicationController
       order = Order.new(order_params(cart_products))
       if order.save
         create_order_detail(order_detail_params(cart_products, order.id))
+        OrderMailer.send_order_detail(order).deliver_now
         delete_cart
+
       else
         redirect_to carts_path, status: :unprocessable_entity, flash: {
           billing_address: order,

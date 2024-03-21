@@ -20,6 +20,8 @@ services:
       - POSTGRES_PASSWORD=password
       - NAME=$NAME
       - PASSWORD=$PASSWORD
+      - EMAIL=$EMAIL
+      - GOOGLE_PASSWORD=$GOOGLE_PASSWORD
     depends_on:
       - db
   js:
