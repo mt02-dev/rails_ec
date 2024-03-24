@@ -10,6 +10,7 @@ Rails.application.routes.draw do
 
   namespace :admin do
     resources :products
+    resources :orders, only: %i[index show]
   end
   # Defines the root path route ("/")
   root 'products#index'

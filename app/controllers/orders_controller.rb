@@ -3,7 +3,6 @@
 class OrdersController < ApplicationController
   PURCAHSE_SUCCESS_MESSAGE = 'Thank you for your purchase!'
   PURCAHSE_ERROR_MESSAGE = "We're sorry, but the purchase was unsuccessful."
-  def show; end
 
   # 購入ボタン押下時
   # cart_idをもとにCart,Cart_product テーブル削除
@@ -78,7 +77,9 @@ class OrdersController < ApplicationController
       order = Order.new(order_params(cart_products))
       if order.save
         create_order_detail(order_detail_params(cart_products, order.id))
+        OrderMailer.send_order_detail(order).deliver_now
         delete_cart
+
       else
         redirect_to carts_path, status: :unprocessable_entity, flash: {
           billing_address: order,
