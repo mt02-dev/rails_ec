@@ -2,17 +2,17 @@
 
 module OrdersHelper
   def date_format(date)
-    date.strftime("%Y/%m/%d")
+    date.strftime('%Y/%m/%d')
   end
 
   def payment_methods_display(num)
     case num
     when 1
-      "Credit Card"
+      'Credit Card'
     when 2
-      "Debit card"
+      'Debit card'
     when 3
-      "PayPal"
+      'PayPal'
     end
   end
 end

@@ -8,14 +8,13 @@
 <p>State: <%= @order.state %></p>
 <p>Zip: <%= @order.zip %></p>
 <p>Address: <%= "#{@order.address1} #{@order.address2}" %></p>
-
 <h3>Purchase Products</h3>
 <% @order.order_details.each do |order_product| %>
   <p><%=" #{order_product.product_name} ¥#{order_product.price} Quantity: #{order_product.quantity}"%></p>
 <% end %>
 <div class="row" >
   <span class="text-success">Promotin code<span>
-  <span><%= "- ¥#{0}" %></span>
-</div>
-<p>Payment Method: <%= payment_methods_display(@order.payment_methods) %></p>
-<p>Billing Amount: <%= "¥#{@order.billing_amount}" %></p>
+      <span><%= "- ¥#{0}" %></span>
+    </div>
+    <p>Payment Method: <%= payment_methods_display(@order.payment_methods) %></p>
+    <p>Billing Amount: <%= "¥#{@order.billing_amount}" %></p>
