@@ -17,5 +17,5 @@ Product List:
   <%= "#{order_product.product_name} price: $#{order_product.price} Quantity: #{order_product.quantity}" %>
 <% end %>
 
-Total Amount: <%= "¥#{@order.billing_amount}" %> 
-Payment Method: Credit Card 
+Payment Method: <%= payment_methods_display(@order.payment_methods) %> 
+Billing Amount: <%= "¥#{@order.billing_amount}" %> 
