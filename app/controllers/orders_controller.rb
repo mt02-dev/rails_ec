@@ -23,6 +23,9 @@ class OrdersController < ApplicationController
     cart_products.each do |cart_product|
       permitted_params[:billing_amount] += cart_product.product.price.to_i * cart_product.quantity.to_i
     end
+    permitted_params[:discounted_price] = 0
+    permitted_params[:discounted_price] = session[:discounted_price] unless session[:discounted_price].nil?
+    permitted_params[:billing_amount] -=  session[:discounted_price] unless session[:discounted_price].nil?
     permitted_params
   end
 
@@ -94,6 +97,4 @@ class OrdersController < ApplicationController
     }
   end
 
-  # プロモーションコード適用
-  def apply_promotion_code; end
 end

@@ -4,6 +4,10 @@ class CartsController < ApplicationController
   before_action :set_cart
 
   ADD_CART_ERROR_MESSAGE = "Couldn't add in cart."
+  SUCCESS_APPLY_MESSAGE = 'Promotion code applied.'
+  FAILED_APPLY_MESSAGE = 'Invalid promotion code.'
+  ALREADY_APPLYIED_MESSAGE = 'Promotion code already applied.'
+
   def index
     @order = Order.new(flash[:billing_address])
     @cart_products = @cart.cart_products.eager_load(:product)
@@ -12,6 +16,12 @@ class CartsController < ApplicationController
     @cart_products.each do |cart_product|
       @billing_amount += cart_product.product.price * cart_product.quantity
     end
+    if session[:promotion_code]
+      @discounted_price = session[:discounted_price]
+      @promotion_code = session[:promotion_code]
+      @billing_amount -= @discounted_price
+    end
+
   end
 
   def new; end
@@ -42,6 +52,25 @@ class CartsController < ApplicationController
     redirect_to carts_path status: :see_other
   end
 
+  # プロモーションコード適用
+  def apply_promotion_code
+    if session[:promotion_code]
+      flash[:danger] = ALREADY_APPLYIED_MESSAGE
+      redirect_to carts_path 
+    else
+      result = find_promotion_code(params[:promotion_code])
+      if result.nil?
+        flash[:danger] = FAILED_APPLY_MESSAGE
+        redirect_to carts_path
+      else
+        session[:promotion_code] = result.code 
+        session[:discounted_price] = result.discounted_price
+        flash[:success] = SUCCESS_APPLY_MESSAGE
+        redirect_to carts_path
+      end
+    end
+  end
+
   private
 
   def set_cart
@@ -52,4 +81,10 @@ class CartsController < ApplicationController
       session[:cart_id] = @cart.id
     end
   end
+
+  def find_promotion_code(input_code)
+    PromotionCode.find_by(code: input_code)
+  end
+
+    
 end

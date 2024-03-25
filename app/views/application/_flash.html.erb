@@ -1,3 +1,16 @@
-<% flash.each do |message_type, message| %>
-  <%= content_tag(:div, message, class: "alert alert-#{message_type}")%>
+<% if flash[:error_messages] %>
+  <div id='error_explanation'>
+    <div class="alert alert-danger ">
+      The form contain <%= pluralize(flash[:error_messages].count, "error") %>
+    </div>
+    <ul>
+      <% flash[:error_messages].each do |message| %>
+        <li class="text-danger"><%= message %></li>
+      <% end %>
+    </ul>
+  </div>
+<% else %>
+  <% flash.each do |message_type, message| %>
+    <%= content_tag(:div, message, class: "alert alert-#{message_type}")%>
+  <% end %>
 <% end %>

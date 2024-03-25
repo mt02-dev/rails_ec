@@ -18,4 +18,5 @@ Product List:
 <% end %>
 
 Payment Method: <%= payment_methods_display(@order.payment_methods) %> 
+promotion_code: <%= "¥#{@order.discounted_price}" %> 
 Billing Amount: <%= "¥#{@order.billing_amount}" %> 
