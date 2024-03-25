@@ -16,16 +16,22 @@ class OrdersController < ApplicationController
   end
 
   private
-
+  
   def order_params(cart_products)
     permitted_params = billing_address_params
     permitted_params[:billing_amount] = 0
     cart_products.each do |cart_product|
       permitted_params[:billing_amount] += cart_product.product.price.to_i * cart_product.quantity.to_i
     end
-    permitted_params[:discounted_price] = 0
-    permitted_params[:discounted_price] = session[:discounted_price] unless session[:discounted_price].nil?
-    permitted_params[:billing_amount] -=  session[:discounted_price] unless session[:discounted_price].nil?
+    result = CartPromotionCode.find_by(cart_id: session[:cart_id])
+    return unless result
+    discounted_price = result.promotion_code.discounted_price
+    permitted_params[:discounted_price] = discounted_price
+    if permitted_params[:billing_amount] > discounted_price 
+      permitted_params[:billing_amount] -= discounted_price
+    else 
+      permitted_params[:billing_amount] = 0
+    end
     permitted_params
   end
 
@@ -96,5 +102,4 @@ class OrdersController < ApplicationController
       error_messages: [PURCAHSE_ERROR_MESSAGE]
     }
   end
-
 end

@@ -23,7 +23,7 @@
           <% end %>
         <% end %>
         <%# -- end -- %>
-        <% unless session[:promotion_code].nil? %>
+        <% if @promotion_code %>
           <li class="list-group-item d-flex justify-content-between bg-body-tertiary">
             <div class="text-success">
               <h6 class="my-0">Promo code</h6>
@@ -39,7 +39,7 @@
       </ul>
       <%# -- promotin code -- %>
       <div class="card p-2">
-        <%= form_with url:apply_promotion_code_carts_path do |f| %>
+        <%= form_with url:cart_promotion_codes_create_path do |f| %>
           <div class="input-group" >
             <%= f.text_field :promotion_code, class: "form-control", placeholder: "Promo code" %> 
             <%= f.submit "Redeem", class: "btn btn-secondary" %>

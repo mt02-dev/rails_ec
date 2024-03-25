@@ -1,14 +1,11 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  post 'cart_promotion_codes/create', to: 'cart_promotion_codes#create'
   delete 'carts/delete', to: 'carts#destroy'
   resources :tasks
   resources :products
-  resources :carts, only: %i[index create] do
-    collection do
-      post 'apply_promotion_code'
-    end
-  end
+  resources :carts, only: %i[index create]
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   resources :orders, only: %i[index create]
 

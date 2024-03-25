@@ -4,9 +4,6 @@ class CartsController < ApplicationController
   before_action :set_cart
 
   ADD_CART_ERROR_MESSAGE = "Couldn't add in cart."
-  SUCCESS_APPLY_MESSAGE = 'Promotion code applied.'
-  FAILED_APPLY_MESSAGE = 'Invalid promotion code.'
-  ALREADY_APPLYIED_MESSAGE = 'Promotion code already applied.'
 
   def index
     @order = Order.new(flash[:billing_address])
@@ -16,12 +13,12 @@ class CartsController < ApplicationController
     @cart_products.each do |cart_product|
       @billing_amount += cart_product.product.price * cart_product.quantity
     end
-    if session[:promotion_code]
-      @discounted_price = session[:discounted_price]
-      @promotion_code = session[:promotion_code]
-      @billing_amount -= @discounted_price
-    end
+    result = promotion_code_applied?
+    return unless result 
 
+    @discounted_price = result.promotion_code.discounted_price
+    @promotion_code = result.promotion_code.code
+    @billing_amount -= @discounted_price
   end
 
   def new; end
@@ -53,23 +50,21 @@ class CartsController < ApplicationController
   end
 
   # プロモーションコード適用
-  def apply_promotion_code
-    if session[:promotion_code]
-      flash[:danger] = ALREADY_APPLYIED_MESSAGE
-      redirect_to carts_path 
-    else
-      result = find_promotion_code(params[:promotion_code])
-      if result.nil?
-        flash[:danger] = FAILED_APPLY_MESSAGE
-        redirect_to carts_path
-      else
-        session[:promotion_code] = result.code 
-        session[:discounted_price] = result.discounted_price
-        flash[:success] = SUCCESS_APPLY_MESSAGE
-        redirect_to carts_path
-      end
-    end
-  end
+  # def apply_promotion_code
+  #   if session[:promotion_code]
+  #     flash[:danger] = ALREADY_APPLYIED_MESSAGE
+  #   else
+  #     result = find_promotion_code(params[:promotion_code])
+  #     if result.nil?
+  #       flash[:danger] = FAILED_APPLY_MESSAGE
+  #     else
+  #       session[:promotion_code] = result.code
+  #       session[:discounted_price] = result.discounted_price
+  #       flash[:success] = SUCCESS_APPLY_MESSAGE
+  #     end
+  #   end
+  #   redirect_to carts_path
+  # end
 
   private
 
@@ -86,5 +81,7 @@ class CartsController < ApplicationController
     PromotionCode.find_by(code: input_code)
   end
 
-    
+  def promotion_code_applied?
+    CartPromotionCode.find_by(cart_id: session[:cart_id])
+  end
 end
