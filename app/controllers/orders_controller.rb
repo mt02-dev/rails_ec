@@ -16,7 +16,7 @@ class OrdersController < ApplicationController
   end
 
   private
-  
+
   def order_params(cart_products)
     permitted_params = billing_address_params
     permitted_params[:billing_amount] = 0
@@ -25,11 +25,12 @@ class OrdersController < ApplicationController
     end
     result = CartPromotionCode.find_by(cart_id: session[:cart_id])
     return unless result
+
     discounted_price = result.promotion_code.discounted_price
     permitted_params[:discounted_price] = discounted_price
-    if permitted_params[:billing_amount] > discounted_price 
+    if permitted_params[:billing_amount] > discounted_price
       permitted_params[:billing_amount] -= discounted_price
-    else 
+    else
       permitted_params[:billing_amount] = 0
     end
     permitted_params
@@ -81,12 +82,21 @@ class OrdersController < ApplicationController
     OrderDetail.insert_all!(order_details)
   end
 
+  def used_promotion_code
+    result = CartPromotionCode.find_by(cart_id: session[:cart_id])
+    return unless result
+
+    promotion_code = result.promotion_code
+    promotion_code.used_promotion_code
+  end
+
   def create_order(cart_products)
     ApplicationRecord.transaction do
       order = Order.new(order_params(cart_products))
       if order.save
         create_order_detail(order_detail_params(cart_products, order.id))
         OrderMailer.send_order_detail(order).deliver_now
+        used_promotion_code
         delete_cart
 
       else
@@ -96,10 +106,11 @@ class OrdersController < ApplicationController
         }
       end
     end
-  rescue StandardError => e
-    logger.error "An error occurred while creating the record.: #{e.message}"
-    redirect_to carts_path, status: :unprocessable_entity, flash: {
-      error_messages: [PURCAHSE_ERROR_MESSAGE]
-    }
   end
+  # rescue StandardError => e
+  #   logger.error "An error occurred while creating the record.: #{e.message}"
+  #   redirect_to carts_path, status: :unprocessable_entity, flash: {
+  #     error_messages: [PURCAHSE_ERROR_MESSAGE]
+  #   }
+  # end
 end

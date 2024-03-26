@@ -14,7 +14,7 @@
 <% end %>
 <div class="row" >
   <span class="text-success">Promotin code<span>
-  <span>- ¥<%= @order.discounted_price %></span>
-</div>
-<p>Payment Method: <%= payment_methods_display(@order.payment_methods) %></p>
-<p>Billing Amount: <%= "¥#{@order.billing_amount}" %></p>
+      <span>- ¥<%= @order.discounted_price %></span>
+    </div>
+    <p>Payment Method: <%= payment_methods_display(@order.payment_methods) %></p>
+    <p>Billing Amount: <%= "¥#{@order.billing_amount}" %></p>

@@ -1,6 +1,6 @@
 <div class="container my-4">
   <div class="row g-5">
-    <%= render partial: 'application/flash' %> 
+    <%= render partial: 'application/flash' %>
     <div class="col-md-5 col-lg-4 order-md-last">
       <h4 class="d-flex justify-content-between align-items-center mb-3">
         <span class="text-primary">Your cart</span>
@@ -41,7 +41,7 @@
       <div class="card p-2">
         <%= form_with url:cart_promotion_codes_create_path do |f| %>
           <div class="input-group" >
-            <%= f.text_field :promotion_code, class: "form-control", placeholder: "Promo code" %> 
+            <%= f.text_field :promotion_code, class: "form-control", placeholder: "Promo code" %>
             <%= f.submit "Redeem", class: "btn btn-secondary" %>
           </div>
         <% end %>

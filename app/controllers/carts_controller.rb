@@ -14,7 +14,7 @@ class CartsController < ApplicationController
       @billing_amount += cart_product.product.price * cart_product.quantity
     end
     result = promotion_code_applied?
-    return unless result 
+    return unless result
 
     @discounted_price = result.promotion_code.discounted_price
     @promotion_code = result.promotion_code.code
