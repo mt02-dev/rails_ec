@@ -49,23 +49,6 @@ class CartsController < ApplicationController
     redirect_to carts_path status: :see_other
   end
 
-  # プロモーションコード適用
-  # def apply_promotion_code
-  #   if session[:promotion_code]
-  #     flash[:danger] = ALREADY_APPLYIED_MESSAGE
-  #   else
-  #     result = find_promotion_code(params[:promotion_code])
-  #     if result.nil?
-  #       flash[:danger] = FAILED_APPLY_MESSAGE
-  #     else
-  #       session[:promotion_code] = result.code
-  #       session[:discounted_price] = result.discounted_price
-  #       flash[:success] = SUCCESS_APPLY_MESSAGE
-  #     end
-  #   end
-  #   redirect_to carts_path
-  # end
-
   private
 
   def set_cart

@@ -106,11 +106,10 @@ class OrdersController < ApplicationController
         }
       end
     end
+  rescue StandardError => e
+    logger.error "An error occurred while creating the record.: #{e.message}"
+    redirect_to carts_path, status: :unprocessable_entity, flash: {
+      error_messages: [PURCAHSE_ERROR_MESSAGE]
+    }
   end
-  # rescue StandardError => e
-  #   logger.error "An error occurred while creating the record.: #{e.message}"
-  #   redirect_to carts_path, status: :unprocessable_entity, flash: {
-  #     error_messages: [PURCAHSE_ERROR_MESSAGE]
-  #   }
-  # end
 end
