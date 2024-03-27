@@ -23,6 +23,16 @@ class OrdersController < ApplicationController
     cart_products.each do |cart_product|
       permitted_params[:billing_amount] += cart_product.product.price.to_i * cart_product.quantity.to_i
     end
+    result = CartPromotionCode.find_by(cart_id: session[:cart_id])
+    return unless result
+
+    discounted_price = result.promotion_code.discounted_price
+    permitted_params[:discounted_price] = discounted_price
+    if permitted_params[:billing_amount] > discounted_price
+      permitted_params[:billing_amount] -= discounted_price
+    else
+      permitted_params[:billing_amount] = 0
+    end
     permitted_params
   end
 
@@ -72,12 +82,21 @@ class OrdersController < ApplicationController
     OrderDetail.insert_all!(order_details)
   end
 
+  def used_promotion_code
+    result = CartPromotionCode.find_by(cart_id: session[:cart_id])
+    return unless result
+
+    promotion_code = result.promotion_code
+    promotion_code.used_promotion_code
+  end
+
   def create_order(cart_products)
     ApplicationRecord.transaction do
       order = Order.new(order_params(cart_products))
       if order.save
         create_order_detail(order_detail_params(cart_products, order.id))
         OrderMailer.send_order_detail(order).deliver_now
+        used_promotion_code
         delete_cart
 
       else
@@ -93,7 +112,4 @@ class OrdersController < ApplicationController
       error_messages: [PURCAHSE_ERROR_MESSAGE]
     }
   end
-
-  # プロモーションコード適用
-  def apply_promotion_code; end
 end
